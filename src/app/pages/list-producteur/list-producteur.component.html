@@ -1,0 +1,120 @@
+
+<div class="container">
+  <div class="row justify-content-between align-items-center mb-3">
+    <div class="col-md-10">
+      <h2 class="mt-4 text-center">Gestion des producteurs</h2>
+    </div>
+    <div class="col-md-2 text-end">
+      <button class="btn btn-primary d-flex align-items-center" data-bs-toggle="modal" data-bs-target="#addProducerModal">
+        <i class="bi bi-plus-circle-fill me-2"></i>Ajouter
+      </button>
+    </div>
+  </div>
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <table class="table table-striped table-bordered mt-3">
+        <thead>
+          <tr>
+            <th>ID</th>
+            <th>Nom</th>
+            <th>Prénom</th>
+            <th>Téléphone</th>
+            <th>Adresse</th>
+            <th>Date de naissance</th>
+            <th>Date d'adhésion</th>
+            <th>Actions</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let producteur of producteurs">
+            <td>{{ producteur.id }}</td>
+            <td>{{ producteur.nom }}</td>
+            <td>{{ producteur.prenom }}</td>
+            <td>{{ producteur.telephone }}</td>
+            <td>{{ producteur.adresse }}</td>
+            <td>{{ producteur.dateNaissance | date }}</td>
+            <td>{{ producteur.dateAdhesion | date }}</td>
+            <td>
+              <button class="btn btn-primary me-2"><i class="bi bi-pencil"></i></button>
+              <button class="btn btn-danger" (click)="supprimerProducteur(producteur.id)"><i class="bi bi-archive-fill"></i></button>
+            </td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal pour l'ajout de producteur -->
+<div class="modal fade" id="addProducerModal" tabindex="-1" aria-labelledby="addProducerModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addProducerModalLabel"str>Ajouter un produc</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <form [formGroup]="producteurForm" (ngSubmit)="onSubmit()">
+          <div class="mb-3">
+            <label for="nom" class="form-label">Nom</label>
+            <input type="text" class="form-control" id="nom" formControlName="nom" aria-describedby="nomHelp" placeholder="Entrez le nom">
+            <div *ngIf="producteurForm.get('nom')?.invalid && (producteurForm.get('nom')?.dirty || producteurForm.get('nom')?.touched)" class="text-danger">
+              <div *ngIf="producteurForm.get('nom')?.errors?.['required']">Le nom est requis.</div>
+              <div *ngIf="producteurForm.get('nom')?.errors?.['pattern']">Le nom ne doit contenir que des lettres.</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="prenom" class="form-label">Prénom</label>
+            <input type="text" class="form-control" id="prenom" formControlName="prenom" aria-describedby="prenomHelp" placeholder="Entrez le prénom">
+            <div *ngIf="producteurForm.get('prenom')?.invalid && (producteurForm.get('prenom')?.dirty || producteurForm.get('prenom')?.touched)" class="text-danger">
+              <div *ngIf="producteurForm.get('prenom')?.errors?.['required']">Le prénom est requis.</div>
+              <div *ngIf="producteurForm.get('prenom')?.errors?.['pattern']">Le prénom ne doit contenir que des lettres.</div>
+            </div>
+          </div>
+          <!-- <div class="mb-3">
+            <label for="email" class="form-label">Email</label>
+            <input type="email" class="form-control" id="email" formControlName="email" aria-describedby="emailHelp" placeholder="Entrez l'email">
+            <div *ngIf="producteurForm.get('email')?.invalid && (producteurForm.get('email')?.dirty || producteurForm.get('email')?.touched)" class="text-danger">
+              <div *ngIf="producteurForm.get('email')?.errors?.['required']">L'email est requis.</div>
+              <div *ngIf="producteurForm.get('email')?.errors?.['email']">L'email n'est pas valide.</div>
+            </div>
+          </div> -->
+          <div class="mb-3">
+            <label for="telephone" class="form-label">Téléphone</label>
+            <input type="tel" class="form-control" id="telephone" formControlName="telephone" aria-describedby="telephoneHelp" placeholder="Entrez le numéro de téléphone">
+            <div *ngIf="producteurForm.get('telephone')?.invalid && (producteurForm.get('telephone')?.dirty || producteurForm.get('telephone')?.touched)" class="text-danger">
+              <div *ngIf="producteurForm.get('telephone')?.errors?.['required']">Le numéro de téléphone est requis.</div>
+              <div *ngIf="producteurForm.get('telephone')?.errors?.['pattern']">Le numéro de téléphone ne doit contenir que des chiffres.</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="adresse" class="form-label">Adresse</label>
+            <textarea class="form-control" id="adresse" formControlName="adresse" rows="3" placeholder="Entrez l'adresse"></textarea>
+            <div *ngIf="producteurForm.get('adresse')?.invalid && (producteurForm.get('adresse')?.dirty || producteurForm.get('adresse')?.touched)" class="text-danger">
+              <div *ngIf="producteurForm.get('adresse')?.errors?.['required']">L'adresse est requise.</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="dateNaissance" class="form-label">Date de naissance</label>
+            <input type="date" class="form-control" id="dateNaissance" formControlName="dateNaissance" aria-describedby="dateNaissanceHelp">
+            <div *ngIf="producteurForm.get('dateNaissance')?.invalid && (producteurForm.get('dateNaissance')?.dirty || producteurForm.get('dateNaissance')?.touched)" class="text-danger">
+              <div *ngIf="producteurForm.get('dateNaissance')?.errors?.['required']">La date de naissance est requise.</div>
+            </div>
+          </div>
+          <div class="mb-3">
+            <label for="dateAdhesion" class="form-label">Date d'adhésion</label>
+            <input type="date" class="form-control" id="dateAdhesion" formControlName="dateAdhesion" aria-describedby="dateAdhesionHelp">
+            <div *ngIf="producteurForm.get('dateAdhesion')?.invalid && (producteurForm.get('dateAdhesion')?.dirty || producteurForm.get('dateAdhesion')?.touched)" class="text-danger">
+              <div *ngIf="producteurForm.get('dateAdhesion')?.errors?.['required']">La date d'adhésion est requise.</div>
+            </div>
+          </div>
+        </form>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+        <button type="submit" class="btn btn-primary" [disabled]="producteurForm.invalid" (click)="onSubmit()">Enregistrer</button>
+      </div>
+    </div>
+  </div>
+</div>

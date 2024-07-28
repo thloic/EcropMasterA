@@ -1,0 +1,64 @@
+<div class="container">
+  <div class="row justify-content-center">
+    <div class="col-md-10">
+      <h2 class="mt-4 text-center">Gestion des Cultures</h2>
+      <div class="d-flex justify-content-end mb-3">
+        <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#addCultureModal">
+          <i class="bi bi-plus-circle-fill me-2"></i>Ajouter
+        </button>
+      </div>
+      <div class="container mt-3">
+        <div class="row">
+          <div *ngFor="let culture of cultures" class="col-md-4 mb-3">
+            <div class="card">
+              <img [src]="'http://localhost:8080/images/' + culture.photo" class="card-img-top" alt="{{ culture.nom }}">
+              <div class="card-body">
+                <h5 class="card-title">{{ culture.nom }}</h5>
+                <div class="d-flex justify-content-between">
+                  <button class="btn btn-primary me-2"><i class="bi bi-pencil"></i></button>
+                  <button class="btn btn-danger" (click)="supprimerCulture(culture.id)">
+                    <i class="bi bi-trash-fill"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- Modal pour l'ajout de culture -->
+<div class="modal fade" id="addCultureModal" tabindex="-1" aria-labelledby="addCultureModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="addCultureModalLabel">Ajouter une Culture</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <!-- Modal pour l'ajout de culture -->
+<div class="modal-body">
+  <form [formGroup]="cultureForm" (ngSubmit)="onSubmit()">
+    <div class="mb-3">
+      <label for="nom" class="form-label">Nom de la culture</label>
+      <input type="text" class="form-control" id="nom" formControlName="nom" required>
+    </div>
+
+    <div class="mb-3">
+      <label for="photo" class="form-label">Photo</label>
+      <input type="file" class="form-control" id="photo" (change)="onFileChange($event)" required>
+    </div>
+
+    <div *ngIf="errorMessage" class="text-danger">{{ errorMessage }}</div> <!-- Message d'erreur -->
+
+    <div class="modal-footer">
+      <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Fermer</button>
+      <button type="submit" class="btn btn-primary">Enregistrer</button>
+    </div>
+  </form>
+</div>
+
+    </div>
+  </div>
+</div>
